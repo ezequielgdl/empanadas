@@ -1,78 +1,44 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { ref, onValue, update } from "firebase/database";
+import React, { useState } from "react";
+import Session from "../components/Session";
+import { getDatabase } from "firebase/database";
+import { app } from "@/app/page";
 
-const Session = ({ database, session, user, params }) => {
-  console.log(params.id);
-  const [empanadas, setEmpanadas] = useState({});
-  console.log("Logged user is", user);
+const database = getDatabase(app);
 
-  useEffect(() => {
-    const empanadasDB = ref(database, "sesiones/" + session);
-    onValue(empanadasDB, (snapshot) => {
-      const data = snapshot.val();
-      setEmpanadas(data.sabores);
-    });
-  }, []);
+const page = ({ params }) => {
+  const [user, setUser] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const session = params.id;
 
-  const handleIncrement = (flavor) => {
-    const updatedEmpanadas = { ...empanadas };
-    updatedEmpanadas[flavor] = (updatedEmpanadas[flavor] || 0) + 1;
-    updateDatabase(updatedEmpanadas);
+  const handleNameChange = (event) => {
+    setUser(event.target.value);
   };
 
-  const handleDecrement = (flavor) => {
-    const updatedEmpanadas = { ...empanadas };
-    updatedEmpanadas[flavor] = Math.max((updatedEmpanadas[flavor] || 0) - 1, 0);
-    updateDatabase(updatedEmpanadas);
-  };
-
-  const updateDatabase = (updatedData) => {
-    const updates = {};
-    for (const [flavor, count] of Object.entries(updatedData)) {
-      updates[`sesiones/${session}/sabores/${flavor}`] = count;
-      updates[`sesiones/${session}/usuarios/${user}/${flavor}`] = count;
-    }
-    update(ref(database), updates)
-      .then(() => {
-        console.log(updates);
-        // Database update successful
-      })
-      .catch((error) => {
-        console.error("Error updating database:", error);
-      });
+  const handleSubmit = () => {
+    setSubmitted(true);
   };
 
   return (
-    <div className="w-1/3 flex flex-col border-2 border-white rounded-md py-4">
-      <h1 className="w-full text-center text-lg font-bold mb-2 text-">
-        Empanadas+
-      </h1>
-      {Object.entries(empanadas).map(([flavor, count]) => (
-        <div
-          className="border-b-2 border-white mb-2 flex justify-between align-center"
-          key={flavor}
-        >
-          <label className="px-3">{flavor.split(/(?=[A-Z])/).join(" ")}</label>
-          <span className="mb-2">
-            <button
-              className="mx-3 bg-white w-8 rounded-full "
-              onClick={() => handleDecrement(flavor)}
-            >
-              -
-            </button>
-            <span className="text-xl">{count}</span>
-            <button
-              className="mx-3 bg-white w-8 rounded-full"
-              onClick={() => handleIncrement(flavor)}
-            >
-              +
-            </button>
-          </span>
+    <section className="flex flex-col items-center p-2 md:p-12 justify-center">
+      {submitted ? (
+        <Session session={session} database={database} user={user} />
+      ) : (
+        <div className="flex flex-col items-center">
+          <label>Tu Nombre:</label>
+          <input
+            type="text"
+            value={user}
+            onChange={handleNameChange}
+            required
+          />
+          <button className="secondary mt-4" onClick={handleSubmit}>
+            Acceder
+          </button>
         </div>
-      ))}
-    </div>
+      )}
+    </section>
   );
 };
 
-export default Session;
+export default page;

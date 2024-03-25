@@ -6,7 +6,7 @@ import Welcome from "./components/Welcome";
 import Session from "./components/Session";
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
   projectId: process.env.PROJECT_ID,
@@ -16,9 +16,7 @@ const firebaseConfig = {
   databaseURL: "https://empanadas-ea8a4-default-rtdb.firebaseio.com",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// Initialize Realtime Database and get a reference to the service
+export const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 export default function Home() {
