@@ -2,11 +2,11 @@ import React from "react";
 
 const UserData = ({ users }) => {
   const userData = Object.entries(users);
-  let grandTotal = 0;
+  let total = 0;
 
   userData.forEach(([userName, choices]) => {
     Object.values(choices).forEach((count) => {
-      grandTotal += count;
+      total += count;
     });
   });
 
