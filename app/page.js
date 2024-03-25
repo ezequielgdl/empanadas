@@ -20,20 +20,9 @@ export const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 export default function Home() {
-  const [session, setSession] = useState(null);
-  const [user, setUser] = useState(null);
-
-  const handleSessionSet = (code, name) => {
-    setSession(code);
-    setUser(name);
-  };
   return (
     <main className="flex flex-col items-center p-4 md:p-12 justify-center">
-      {!session ? (
-        <Welcome onSessionSet={handleSessionSet} />
-      ) : (
-        <Session session={session} database={database} user={user} />
-      )}
+      <Welcome />
     </main>
   );
 }

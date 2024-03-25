@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { getDatabase, ref, set, onValue, update } from "firebase/database";
+import { useRouter } from "next/navigation";
 
 const shortid = require("shortid");
 
 const Welcome = ({ onSessionSet }) => {
+  const router = useRouter();
   const sessionId = shortid.generate();
   const [userName, setUserName] = useState("");
   const [code, setCode] = useState("");
@@ -15,6 +17,38 @@ const Welcome = ({ onSessionSet }) => {
 
   const handleCodeChange = (event) => {
     setCode(event.target.value);
+  };
+
+  const handleCreate = () => {
+    console.log("created");
+    const id = sessionId;
+    const usuarios = {};
+    const sabores = {
+      Calabaza: 0,
+      Capresse: 0,
+      Carne: 0,
+      CarneACuchillo: 0,
+      CarnePicante: 0,
+      Cheeseburger: 0,
+      Choclo: 0,
+      CuatroQuesos: 0,
+      JamonTomateAlbahaca: 0,
+      JamonYQueso: 0,
+      PancetaCiruela: 0,
+      Pollo: 0,
+      QuesoCebolla: 0,
+      Roquefort: 0,
+      VacioProvoleta: 0,
+      Verdura: 0,
+    };
+
+    const db = getDatabase();
+    set(ref(db, "sesiones/" + id), {
+      sabores,
+      usuarios,
+    });
+
+    router.push(`${id}`);
   };
 
   const handleSubmit = () => {
@@ -73,7 +107,6 @@ const Welcome = ({ onSessionSet }) => {
   const handleCodeSubmit = () => {
     const name = userName;
     const id = code;
-
     const db = getDatabase();
 
     const sessionRef = ref(db, "sesiones/" + id);
@@ -132,7 +165,7 @@ const Welcome = ({ onSessionSet }) => {
     "
     >
       <h1 className="mb-4 text-center text-2xl">Empanadas+</h1>
-      <div className="flex">
+      {/* <div className="flex">
         <h2
           className="bg-black/5 px-4 py-1 mr-1 rounded-t-md cursor-pointer"
           onClick={() => setOpen("crear")}
@@ -145,8 +178,8 @@ const Welcome = ({ onSessionSet }) => {
         >
           Entrar
         </h2>
-      </div>
-      {open === "entrar" && (
+      </div> */}
+      {/* {open === "entrar" && (
         <div className="bg-black/5 flex flex-col p-4 rounded-b-md rounded-tr-md">
           <label>Tu Código:</label>
           <input
@@ -166,17 +199,17 @@ const Welcome = ({ onSessionSet }) => {
             Acceder
           </button>
         </div>
-      )}
+      )} */}
       {open === "crear" && (
         <div className="bg-black/5 flex flex-col p-4 rounded-b-md rounded-tr-md">
-          <label>Tu Nombre:</label>
+          {/* <label>Tu Nombre:</label>
           <input
             type="text"
             value={userName}
             onChange={handleNameChange}
             required
-          />
-          <button className="secondary" onClick={handleSubmit}>
+          /> */}
+          <button className="secondary" onClick={handleCreate}>
             Crear Juntada
           </button>
         </div>

@@ -36,12 +36,24 @@ const Session = ({ database, session, user }) => {
   const handleDecrement = (flavor) => {
     const updatedEmpanadas = { ...empanadas };
     const updatedUserEmpanadas = { ...userEmpanadas };
-    updatedEmpanadas[flavor] = Math.max((updatedEmpanadas[flavor] || 0) - 1, 0);
-    updatedUserEmpanadas[flavor] = Math.max(
-      (updatedUserEmpanadas[flavor] || 0) - 1,
-      0
-    );
-    updateDatabase(updatedEmpanadas, updatedUserEmpanadas);
+
+    // Check if the user's count for the flavor is greater than zero
+    if (updatedUserEmpanadas[flavor] > 0) {
+      // Decrement the user's count
+      updatedUserEmpanadas[flavor] = Math.max(
+        (updatedUserEmpanadas[flavor] || 0) - 1,
+        0
+      );
+
+      // Decrement the global count
+      updatedEmpanadas[flavor] = Math.max(
+        (updatedEmpanadas[flavor] || 0) - 1,
+        0
+      );
+
+      // Update the database with the updated counts
+      updateDatabase(updatedEmpanadas, updatedUserEmpanadas);
+    }
   };
 
   const updateDatabase = (updatedData, updatedUserData) => {
