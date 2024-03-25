@@ -86,19 +86,24 @@ const page = ({ params }) => {
   };
 
   return (
-    <section className="flex flex-col items-center p-2 md:p-12 justify-center">
+    <section className="flex flex-col p-6 lg:p-12 min-h-screen sm:items-center">
       {submitted ? (
         <Session session={session} database={database} user={user} />
       ) : (
-        <div className="flex flex-col items-center">
-          <label>Tu Nombre:</label>
+        <div className="flex flex-col lg:w-1/4">
+          <label className="font-['Magofah'] text-xl text-center">
+            Tu Nombre:
+          </label>
           <input
             type="text"
             value={user}
             onChange={handleNameChange}
             required
           />
-          <button className="secondary mt-4" onClick={handleSubmit}>
+          <button
+            className="border-2 rounded-md py-3 px-6 shadow-md mt-4 border-white"
+            onClick={handleSubmit}
+          >
             Acceder
           </button>
         </div>

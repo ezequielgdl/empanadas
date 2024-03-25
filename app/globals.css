@@ -18,20 +18,6 @@ h1 {
   font-family: "Magofah", sans-serif;
 }
 
-button.secondary {
-  padding: 0.5rem 1rem;
-  margin: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 0.5rem;
-  background-color: rgb(var(--background), 0.6);
-  color: rgb(var(--foreground));
-}
-
-button.secondary:hover {
-  background-color: rgba(var(--foreground), 0.8);
-}
-
 input:focus-visible {
   outline: 0.15rem solid yellow;
 }

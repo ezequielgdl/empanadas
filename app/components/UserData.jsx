@@ -2,9 +2,8 @@ import React from "react";
 
 const UserData = ({ users }) => {
   const userData = Object.entries(users);
-  console.log(userData);
   return (
-    <div className="border-2 border-white rounded-md p-4 md:w-1/4">
+    <div className="border-2 border-white rounded-md p-4 lg:w-1/4">
       <h3 className="font-bold mb-2">Participantes</h3>
       {userData.map(([userName, choices]) => (
         <div className="mb-2" key={userName}>

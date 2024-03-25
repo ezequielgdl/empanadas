@@ -21,7 +21,7 @@ const database = getDatabase(app);
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center p-4 md:p-12 justify-center">
+    <main className="flex flex-col items-center p-6 lg:p-12 justify-center min-h-screen">
       <Welcome />
     </main>
   );

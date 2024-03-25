@@ -66,7 +66,6 @@ const Session = ({ database, session, user }) => {
     }
     update(ref(database), updates)
       .then(() => {
-        console.log("database updated");
         // Database update successful
       })
       .catch((error) => {
@@ -75,14 +74,11 @@ const Session = ({ database, session, user }) => {
   };
 
   return (
-    <section className="flex md:flex-row flex-col w-full justify-center">
-      <div className="flex flex-col border-2 border-white rounded-md py-4 md:mx-4 md:w-1/3 mb-4 md:mb-0">
+    <div className="flex lg:flex-row flex-col w-full justify-center">
+      <div className="flex flex-col border-2 border-white rounded-md py-4 lg:mx-4 lg:w-1/3 mb-4 lg:mb-0">
         <h1 className="w-full text-center text-3xl font-bold mb-2 text-">
           Empanadas+
         </h1>
-        <p className="w-full text-center text-lg font-bold mb-2 text-">
-          Hola {user}
-        </p>
         {Object.entries(empanadas).map(([flavor, count]) => (
           <div
             className="border-b-2 border-white flex justify-between items-center p-2"
@@ -108,7 +104,7 @@ const Session = ({ database, session, user }) => {
         ))}
       </div>
       <UserData users={usuarios} />
-    </section>
+    </div>
   );
 };
 
