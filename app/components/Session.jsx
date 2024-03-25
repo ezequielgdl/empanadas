@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ref, onValue, update } from "firebase/database";
 import UserData from "./UserData";
+import Link from "next/link";
 
 const Session = ({ database, session, user }) => {
   const [empanadas, setEmpanadas] = useState({});
@@ -69,13 +70,33 @@ const Session = ({ database, session, user }) => {
       });
   };
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
   return (
     <div className="flex lg:flex-row flex-col w-full justify-center">
       <div className="flex flex-col border-2 border-white rounded-md py-4 lg:mx-4 lg:w-1/3 mb-4 lg:mb-0">
         <h1 className="w-full text-center text-3xl font-bold mb-2 text-">
           Empanadas+
         </h1>
-        <p className="text-center">Tu link de acceso: </p>
+        <div className="text-center mb-2">
+          Link de acceso:{" "}
+          <Link
+            className="hover:text-orange-600 text-orange-500"
+            href={`https://empanadas-delta.vercel.app/${session}`}
+          >
+            {session}
+          </Link>
+          <button
+            className="mx-1 border-2 rounded-md p-1 shadow-md border-white"
+            onClick={() =>
+              copyToClipboard(`https://empanadas-delta.vercel.app/${session}`)
+            }
+          >
+            Copiar
+          </button>
+        </div>
         {Object.entries(empanadas).map(([flavor, count]) => (
           <div
             className="border-b-2 border-white flex justify-between items-center p-2"
