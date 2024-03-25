@@ -1,16 +1,18 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, update } from "firebase/database";
+import { getDatabase } from "firebase/database";
+import Welcome from "./components/Welcome";
+import Session from "./components/Session";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCox1E5KhH97yGGXOq2bcC41zj00GrRX5I",
-  authDomain: "empanadas-ea8a4.firebaseapp.com",
-  projectId: "empanadas-ea8a4",
-  storageBucket: "empanadas-ea8a4.appspot.com",
-  messagingSenderId: "893348663498",
-  appId: "1:893348663498:web:a17d6c9d8aa399f6a32433",
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
   databaseURL: "https://empanadas-ea8a4-default-rtdb.firebaseio.com",
 };
 
@@ -20,67 +22,20 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 export default function Home() {
-  const [empanadas, setEmpanadas] = useState({});
+  const [session, setSession] = useState(null);
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const empanadasDB = ref(database, "sabores/");
-    onValue(empanadasDB, (snapshot) => {
-      const data = snapshot.val();
-      setEmpanadas(data);
-      console.log(empanadas);
-    });
-  }, []);
-
-  const handleIncrement = (flavor) => {
-    const updatedEmpanadas = { ...empanadas };
-    updatedEmpanadas[flavor] = (updatedEmpanadas[flavor] || 0) + 1;
-    updateDatabase(updatedEmpanadas);
+  const handleSessionSet = (code, name) => {
+    setSession(code);
+    setUser(name);
   };
-
-  const handleDecrement = (flavor) => {
-    const updatedEmpanadas = { ...empanadas };
-    updatedEmpanadas[flavor] = Math.max((updatedEmpanadas[flavor] || 0) - 1, 0);
-    updateDatabase(updatedEmpanadas);
-  };
-
-  const updateDatabase = (updatedData) => {
-    const updates = {};
-    for (const [flavor, count] of Object.entries(updatedData)) {
-      updates[`/sabores/${flavor}`] = count;
-    }
-    update(ref(database), updates)
-      .then(() => {
-        // Database update successful
-      })
-      .catch((error) => {
-        console.error("Error updating database:", error);
-      });
-  };
-
   return (
-    <main className="flex flex-col items-center p-24 justify-between">
-      <div className="w-1/2 flex flex-col">
-        {Object.entries(empanadas).map(([flavor, count]) => (
-          <div key={flavor}>
-            <label>{flavor}</label>
-            <div className="border-b-2 mb-2">
-              <button
-                className="mx-2 bg-white w-5 rounded text-black"
-                onClick={() => handleDecrement(flavor)}
-              >
-                -
-              </button>
-              <span className="text-lg">{count}</span>
-              <button
-                className="mx-2 bg-white w-5 rounded text-black"
-                onClick={() => handleIncrement(flavor)}
-              >
-                +
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <main className="flex flex-col items-center p-4 md:p-12 justify-center">
+      {!session ? (
+        <Welcome onSessionSet={handleSessionSet} />
+      ) : (
+        <Session session={session} database={database} user={user} />
+      )}
     </main>
   );
 }
