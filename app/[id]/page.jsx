@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Session from "../components/Session";
 import { getDatabase, update, ref, onValue } from "firebase/database";
 import { app } from "@/app/page";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const database = getDatabase(app);
 
@@ -10,6 +12,17 @@ const page = ({ params }) => {
   const [user, setUser] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const session = params.id;
+  const router = useRouter();
+
+  useEffect(() => {
+    const sessionRef = ref(database, "sesiones/" + session);
+    onValue(sessionRef, (snapshot) => {
+      const existingData = snapshot.val();
+      if (!existingData) {
+        router.push("/");
+      }
+    });
+  }, []);
 
   const handleNameChange = (event) => {
     setUser(event.target.value);

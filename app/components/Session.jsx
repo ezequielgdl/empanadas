@@ -37,21 +37,17 @@ const Session = ({ database, session, user }) => {
     const updatedEmpanadas = { ...empanadas };
     const updatedUserEmpanadas = { ...userEmpanadas };
 
-    // Check if the user's count for the flavor is greater than zero
     if (updatedUserEmpanadas[flavor] > 0) {
-      // Decrement the user's count
       updatedUserEmpanadas[flavor] = Math.max(
         (updatedUserEmpanadas[flavor] || 0) - 1,
         0
       );
 
-      // Decrement the global count
       updatedEmpanadas[flavor] = Math.max(
         (updatedEmpanadas[flavor] || 0) - 1,
         0
       );
 
-      // Update the database with the updated counts
       updateDatabase(updatedEmpanadas, updatedUserEmpanadas);
     }
   };
