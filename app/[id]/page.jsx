@@ -3,12 +3,11 @@ import React, { useEffect, useState } from "react";
 import Session from "../components/Session";
 import { getDatabase, update, ref, onValue } from "firebase/database";
 import { app } from "@/app/page";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const database = getDatabase(app);
 
-const page = ({ params }) => {
+const Page = ({ params }) => {
   const [user, setUser] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const session = params.id;
@@ -32,26 +31,7 @@ const page = ({ params }) => {
     const name = user;
     const id = session;
     const db = database;
-    const usuarios = {
-      [name]: {
-        Calabaza: 0,
-        Capresse: 0,
-        Carne: 0,
-        CarneACuchillo: 0,
-        CarnePicante: 0,
-        Cheeseburger: 0,
-        Choclo: 0,
-        CuatroQuesos: 0,
-        JamonTomateAlbahaca: 0,
-        JamonYQueso: 0,
-        PancetaCiruela: 0,
-        Pollo: 0,
-        QuesoCebolla: 0,
-        Roquefort: 0,
-        VacioProvoleta: 0,
-        Verdura: 0,
-      },
-    };
+
     const sessionRef = ref(db, "sesiones/" + id);
     onValue(sessionRef, (snapshot) => {
       const existingData = snapshot.val();
@@ -125,4 +105,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;

@@ -23,7 +23,7 @@ const Session = ({ database, session, user }) => {
       const data = snapshot.val();
       setUserEmpanadas(data);
     });
-  }, []);
+  }, [session]);
 
   const handleIncrement = (flavor) => {
     const updatedEmpanadas = { ...empanadas };
@@ -75,6 +75,7 @@ const Session = ({ database, session, user }) => {
         <h1 className="w-full text-center text-3xl font-bold mb-2 text-">
           Empanadas+
         </h1>
+        <p className="text-center">Tu link de acceso: </p>
         {Object.entries(empanadas).map(([flavor, count]) => (
           <div
             className="border-b-2 border-white flex justify-between items-center p-2"
