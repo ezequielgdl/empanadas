@@ -13,7 +13,7 @@ const UserData = ({ users }) => {
   return (
     <div className="border-2 border-white rounded-md p-4 lg:w-1/4">
       <h3 className="font-bold mb-2">Participantes</h3>
-      <p>Total: {grandTotal}</p>
+      <p>Total: {total}</p>
       {userData.map(([userName, choices]) => (
         <div className="mb-2" key={userName}>
           <h2 className="border-b-2 border-white font-semibold">{userName}</h2>
