@@ -9,7 +9,6 @@ const Welcome = ({ onSessionSet }) => {
   const sessionId = shortid.generate();
 
   const handleCreate = () => {
-    console.log("created");
     const id = sessionId;
     const usuarios = {};
     const sabores = {
@@ -47,14 +46,15 @@ const Welcome = ({ onSessionSet }) => {
       w-full
       h-auto
       flex flex-col
+      items-center
     "
     >
-      <h1 className="mb-6 text-center text-2xl">Empanadas+</h1>
+      <h1 className="mb-6 text-center text-4xl">Empanadas+</h1>
       <button
-        className="border-2 rounded-md py-3 px-6 shadow-md border-white"
+        className="rounded-lg py-1 px-6 shadow-md border-2"
         onClick={handleCreate}
       >
-        Crear Juntada
+        Crear Sesión
       </button>
     </section>
   );
